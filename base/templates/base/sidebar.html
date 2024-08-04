@@ -42,16 +42,17 @@
         </div>
     </li>
 
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDataKegiatan"
+    <li class="nav-item {% if request.resolver_match.url_name == 'list-kegiatan' or request.resolver_match.url_name == 'edit-kegiatan' or request.resolver_match.url_name == 'tambah-kegiatan' %} active {% endif %}">
+        <a class="nav-link {% if request.resolver_match.url_name != 'list-kegiatan' and request.resolver_match.url_name != 'edit-kegiatan' and request.resolver_match.url_name != 'tambah-kegiatan' %} collapsed {% endif %}" href="#" data-toggle="collapse" data-target="#collapseDataKegiatan"
             aria-expanded="true" aria-controls="collapseDataKegiatan">
             <i class="fas fa-fw fa-cog"></i>
             <span>Data Kegiatan</span>
         </a>
-        <div id="collapseDataKegiatan" class="collapse" aria-labelledby="DataKegiatan" data-parent="#accordionSidebar">
+        <div id="collapseDataKegiatan" class="collapse {% if request.resolver_match.url_name == 'list-kegiatan' or request.resolver_match.url_name == 'edit-kegiatan' or request.resolver_match.url_name == 'tambah-kegiatan' %} show {% endif %}" aria-labelledby="DataKegiatan" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="buttons.html">List Kegiatan</a>
-                <a class="collapse-item" href="cards.html">Tambah Kegiatan</a>
+                <a class="collapse-item {% if request.resolver_match.url_name == 'list-kegiatan' %} active {% endif %}" href="{% url 'list-kegiatan' %}">List Kegiatan</a>
+                <a class="collapse-item {% if request.resolver_match.url_name == 'edit-kegiatan' %} active {% endif %}" href="{% url 'edit-kegiatan' %}">Edit Kegiatan</a>
+                <a class="collapse-item {% if request.resolver_match.url_name == 'tambah-kegiatan' %} active {% endif %}" href="{% url 'tambah-kegiatan' %}">Tambah Kegiatan</a>
             </div>
         </div>
     </li>
