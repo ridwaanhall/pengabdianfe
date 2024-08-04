@@ -4,11 +4,15 @@ from django.shortcuts import render
 def index(request):
     return render(request, 'index.html')
 
+def tambah_pamong(request):
+    return render(request, 'tambah-pamong.html')
+
 def list_pamong(request):
     return render(request, 'list-pamong.html')
 
-def tambah_pamong(request):
-    return render(request, 'tambah-pamong.html')
+def edit_pamong(request):
+    return render(request, 'edit-pamong.html')
+
 
 # auth
 def login(request):

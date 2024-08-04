@@ -6,6 +6,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('list-pamong/', views.list_pamong, name='list-pamong'),
     path('tambah-pamong/', views.tambah_pamong, name='tambah-pamong'),
+    path('edit-pamong/', views.edit_pamong, name='edit-pamong'),
     
     # auth
     path('login/', views.login, name='login'),
