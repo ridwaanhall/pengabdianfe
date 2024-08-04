@@ -15,6 +15,8 @@
     <h1 class="h3 mb-4 text-gray-800">Tambah Pamong</h1>
     <!-- <p class="mb-4"></p> -->
 
+    <div id="alert-container"></div>
+
     <div class="row">
         <div class="col-xl-4">
             <!-- Profile picture card -->
@@ -36,49 +38,35 @@
             <div class="card mb-4">
                 <div class="card-header">Pamong Detail</div>
                 <div class="card-body">
-                    <form>
-                        <!-- Form Row-->
+                    <form id="tambahPamongForm">
+                        <h4>Data Diri</h4>
                         <div class="row gx-3 mb-3">
-                            <!-- Form Group (Nama)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputNama">Nama</label>
-                                <input class="form-control" id="inputNama" type="text" placeholder="Enter nama" value="">
+                                <input class="form-control" id="inputNama" type="text" placeholder="Masukkan nama" value="">
                             </div>
-                            <!-- Form Group (NIK)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputNIK">NIK</label>
-                                <input class="form-control" id="inputNIK" type="text" placeholder="Enter NIK" value="">
+                                <input class="form-control" id="inputNIK" type="text" placeholder="Masukkan NIK" value="">
                             </div>
                         </div>
-                        <!-- Form Row-->
                         <div class="row gx-3 mb-3">
-                            <!-- Form Group (NIP)-->
-                            <div class="col-md-6">
-                                <label class="small mb-1" for="inputNIP">NIP</label>
-                                <input class="form-control" id="inputNIP" type="text" placeholder="Enter NIP" value="">
-                            </div>
-                            <!-- Form Group (Tempat Lahir)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputTempatLahir">Tempat Lahir</label>
-                                <input class="form-control" id="inputTempatLahir" type="text" placeholder="Enter tempat lahir" value="">
+                                <input class="form-control" id="inputTempatLahir" type="text" placeholder="Masukkan tempat lahir" value="">
                             </div>
-                        </div>
-                        <!-- Form Row-->
-                        <div class="row gx-3 mb-3">
-                            <!-- Form Group (Tanggal Lahir)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputTanggalLahir">Tanggal Lahir</label>
-                                <input class="form-control" id="inputTanggalLahir" type="date" placeholder="Enter tanggal lahir" value="">
-                            </div>
-                            <!-- Form Group (Alamat)-->
-                            <div class="col-md-6">
-                                <label class="small mb-1" for="inputAlamat">Alamat</label>
-                                <input class="form-control" id="inputAlamat" type="text" placeholder="Enter alamat" value="">
+                                <input class="form-control" id="inputTanggalLahir" type="date" placeholder="Masukkan tanggal lahir" value="">
                             </div>
                         </div>
-                        <!-- Form Row-->
                         <div class="row gx-3 mb-3">
-                            <!-- Form Group (Status Kawin)-->
+                            <div class="col-md-12">
+                                <label class="small mb-1" for="inputAlamat">Alamat</label>
+                                <textarea class="form-control" id="inputAlamat" type="text" placeholder="Masukkan alamat" value=""></textarea>
+                            </div>
+                        </div>
+                        <div class="row gx-3 mb-3">
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputStatusKawin">Status Kawin</label>
                                 <select class="form-select" id="inputStatusKawin">
@@ -89,21 +77,13 @@
                                     <option value="Cerai Mati">Cerai Mati</option>
                                 </select>
                             </div>
-                            <!-- Form Group (Pekerjaan)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputPekerjaan">Pekerjaan</label>
-                                <input class="form-control" id="inputPekerjaan" type="text" placeholder="Enter pekerjaan" value="">
+                                <input class="form-control" id="inputPekerjaan" type="text" placeholder="Masukkan pekerjaan" value="">
                             </div>
                         </div>
-                        <!-- Form Row-->
                         <div class="row gx-3 mb-3">
-                            <!-- Form Group (Jabatan)-->
-                            <div class="col-md-6">
-                                <label class="small mb-1" for="inputJabatan">Jabatan</label>
-                                <input class="form-control" id="inputJabatan" type="text" placeholder="Enter jabatan" value="">
-                            </div>
-                            <!-- Form Group (Gol Darah)-->
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <label class="small mb-1" for="inputGolDarah">Gol Darah</label>
                                 <select class="form-select" id="inputGolDarah">
                                     <option value="" disabled="">Select gol darah:</option>
@@ -113,16 +93,7 @@
                                     <option value="O" selected="">O</option>
                                 </select>
                             </div>
-                        </div>
-                        <!-- Form Row-->
-                        <div class="row gx-3 mb-3">
-                            <!-- Form Group (Agama)-->
-                            <div class="col-md-6">
-                                <label class="small mb-1" for="inputAgama">Agama</label>
-                                <input class="form-control" id="inputAgama" type="text" placeholder="Enter agama" value="">
-                            </div>
-                            <!-- Form Group (Jenis Kelamin)-->
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <label class="small mb-1" for="inputJenisKelamin">Jenis Kelamin</label>
                                 <select class="form-select" id="inputJenisKelamin">
                                     <option value="" disabled="">Select jenis kelamin:</option>
@@ -130,27 +101,51 @@
                                     <option value="P">P</option>
                                 </select>
                             </div>
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputAgama">Agama</label>
+                                <select class="form-select" id="inputAgama">
+                                    <option value="" disabled="">Select agama:</option>
+                                    <option value="Islam" selected="">Islam</option>
+                                    <option value="Kristen">Kristen</option>
+                                    <option value="Katolik">Katolik</option>
+                                    <option value="Hindu">Hindu</option>
+                                    <option value="Budha">Budha</option>
+                                    <option value="Konghucu">Konghucu</option>
+                                </select>
+                            </div>
                         </div>
-                        <!-- Form Row-->
+                        
+                        <h4 class="mt-4">Data Pegawai</h4>
+
                         <div class="row gx-3 mb-3">
-                            <!-- Form Group (Masa Jabatan Mulai)-->
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputNIP">NIP</label>
+                                <input class="form-control" id="inputNIP" type="text" placeholder="Masukkan NIP" value="">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small mb-1" for="inputJabatan">Jabatan</label>
+                                <input class="form-control" id="inputJabatan" type="text" placeholder="Masukkan jabatan" value="">
+                            </div>
+                        </div>
+                        <div class="row gx-3 mb-3">
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputMasaJabatanMulai">Masa Jabatan Mulai</label>
-                                <input class="form-control" id="inputMasaJabatanMulai" type="number" placeholder="Enter masa jabatan mulai" value="">
+                                <input class="form-control" id="inputMasaJabatanMulai" type="number" placeholder="Masukkan masa jabatan mulai" value="">
                             </div>
-                            <!-- Form Group (Masa Jabatan Selesai)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputMasaJabatanSelesai">Masa Jabatan Selesai</label>
-                                <input class="form-control" id="inputMasaJabatanSelesai" type="number" placeholder="Enter masa jabatan selesai" value="">
+                                <input class="form-control" id="inputMasaJabatanSelesai" type="number" placeholder="Masukkan masa jabatan selesai" value="">
                             </div>
                         </div>
-                        <!-- Form Group (Pendidikan Terakhir)-->
                         <div class="mb-3">
                             <label class="small mb-1" for="inputPendidikanTerakhir">Pendidikan Terakhir</label>
-                            <input class="form-control" id="inputPendidikanTerakhir" type="text" placeholder="Enter pendidikan terakhir" value="">
+                            <input class="form-control" id="inputPendidikanTerakhir" type="text" placeholder="Masukkan pendidikan terakhir" value="">
                         </div>
-                        <!-- Submit button-->
-                        <button class="btn btn-primary" type="button">Tambah Pamong</button>
+                        <div class="mb-3">
+                            <label class="small mb-1" for="inputGambar">Gambar</label>
+                            <input class="form-control" id="inputGambar" type="url" placeholder="Masukkan gambar" value="">
+                        </div>
+                        <button class="btn btn-primary" type="button" id="submitPamong">Tambah Pamong</button>
                     </form>
                 </div>
             </div>
@@ -161,5 +156,64 @@
 {% endblock content %}
 
 {% block extra_js %}
+<script>
+document.getElementById('submitPamong').addEventListener('click', function() {
+    const data = {
+        nama: document.getElementById('inputNama').value,
+        nik: document.getElementById('inputNIK').value,
+        nip: document.getElementById('inputNIP').value,
+        tempat_lahir: document.getElementById('inputTempatLahir').value,
+        tanggal_lahir: new Date(document.getElementById('inputTanggalLahir').value).toISOString(),
+        alamat: document.getElementById('inputAlamat').value,
+        status_kawin: document.getElementById('inputStatusKawin').value,
+        pekerjaan: document.getElementById('inputPekerjaan').value,
+        jabatan: document.getElementById('inputJabatan').value,
+        gol_darah: document.getElementById('inputGolDarah').value,
+        agama: document.getElementById('inputAgama').value,
+        jenis_kelamin: document.getElementById('inputJenisKelamin').value,
+        masa_jabatan_mulai: parseInt(document.getElementById('inputMasaJabatanMulai').value),
+        masa_jabatan_selesai: parseInt(document.getElementById('inputMasaJabatanSelesai').value),
+        pendidikan_terakhir: document.getElementById('inputPendidikanTerakhir').value,
+        gambar: document.getElementById('inputGambar').value
+    };
 
+    fetch('https://technological-adriena-taufiqdp-d94bbf04.koyeb.app/pamong/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        const alertContainer = document.getElementById('alert-container');
+        if (data.detail) {
+            // Display error message from the response
+            alertContainer.innerHTML = `
+                <div class="alert alert-danger" role="alert">
+                    Terjadi kesalahan saat menambahkan data pamong: ${data.detail}
+                </div>
+            `;
+        } else {
+            // Success message
+            alertContainer.innerHTML = `
+                <div class="alert alert-success" role="alert">
+                    Data pamong berhasil ditambahkan
+                </div>
+            `;
+            document.getElementById('tambahPamongForm').reset();
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        const alertContainer = document.getElementById('alert-container');
+        alertContainer.innerHTML = `
+            <div class="alert alert-danger" role="alert">
+                Terjadi kesalahan saat mengirim data pamong: ${error.message}
+            </div>
+        `;
+    });
+});
+</script>
 {% endblock extra_js %}
