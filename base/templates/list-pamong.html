@@ -1,0 +1,83 @@
+{% extends 'base/base.html' %}
+
+{% load static %}
+
+{% block title %}List Pamong{% endblock title %}
+
+{% block extra_css %}
+<link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+{% endblock extra_css %}
+
+{% block content %}
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Data Pamong</h1>
+    <p class="mb-4">Data Pamong adalah data Perangkat Desa yang terdaftar dalam Sistem Pendataan Kegiatan Desa</p>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">List Data Pamong</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Profile Photo</th>
+                            <th>Nama</th>
+                            <th>NIP</th>
+                            <th>Pekerjaan</th>
+                            <th>Jabatan</th>
+                            <th>Masa Jabatan</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Profile Photo</th>
+                            <th>Nama</th>
+                            <th>NIP</th>
+                            <th>Pekerjaan</th>
+                            <th>Jabatan</th>
+                            <th>Masa Jabatan</th>
+                            <th>Action</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        <tr>
+                            <td><img src="{% static 'img/undraw_profile.svg' %}" width="50px"></td>
+                            <td>Budi Santoso</td>
+                            <td>197001012021011001</td>
+                            <td>Sekretaris Desa</td>
+                            <td>Sekretaris</td>
+                            <td>2020-2025</td>
+                            <td>
+                                <a href="#" class="btn btn-info btn-sm">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                                <a href="#" class="btn btn-success btn-sm">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a href="#" class="btn btn-danger btn-sm">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+    <!-- Page level plugins -->
+    <script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="{% static 'js/demo/datatables-demo.js' %}"></script>
+{% endblock extra_js %}
