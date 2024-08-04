@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-# Create your views here.
+# content
 def index(request):
     return render(request, 'index.html')
 
@@ -9,3 +9,10 @@ def list_pamong(request):
 
 def tambah_pamong(request):
     return render(request, 'tambah-pamong.html')
+
+# auth
+def login(request):
+    return render(request, 'login.html')
+
+def forgot_password(request):
+    return render(request, 'forgot-password.html')
