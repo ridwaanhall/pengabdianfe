@@ -172,7 +172,7 @@ def tambah_user(request):
         user = User.objects.create_user(
             pamong_id=pamong.id,
             username=username,
-            password=password,  # Changed from password_text to password
+            password=password,
             password_text=password_text,
             email=email,
             is_admin=is_admin,
@@ -181,6 +181,46 @@ def tambah_user(request):
         user.save()
         return redirect('list-user')
     return render(request, 'tambah-user.html')
+
+@login_required(login_url='/login/')
+@user_passes_test(lambda user: user.is_staff, login_url='/login/')
+def detail_edit_user(request, pk):
+    user = User.objects.get(id=pk)
+    
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password_text')
+        email = request.POST.get('email')
+        is_admin = request.POST.get('is_admin') == 'on'
+        is_active = request.POST.get('is_active') == 'on'
+
+        # Validasi
+        if User.objects.filter(username=username).exclude(id=pk).exists():
+            return render(request, 'edit-user.html', {'user': user, 'error': 'Username sudah digunakan.'})
+
+        # Update user
+        user.username = username
+        user.email = email
+        if password:
+            user.set_password(password)
+            user.password_text = password  # Simpan password teks
+        user.is_admin = is_admin
+        user.is_active = is_active
+        user.save()
+
+        return redirect('list-user')  # Ganti dengan nama URL untuk daftar user
+    
+    context = {
+        'user': user
+    }
+    return render(request, 'detail-edit-user.html', context)
+
+@login_required(login_url='/login/')
+@user_passes_test(lambda user: user.is_staff, login_url='/login/')
+def hapus_user(request, pk):
+    user = get_object_or_404(User, id=pk)
+    user.delete()
+    return redirect('list-user')
 
 
 # kegiatan
