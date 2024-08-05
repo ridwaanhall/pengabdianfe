@@ -63,16 +63,16 @@
         Admin
     </div>
 
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDataUser"
+    <li class="nav-item {% if request.resolver_match.url_name == 'list-user' or request.resolver_match.url_name == 'tambah-user' %} active {% endif %}">
+        <a class="nav-link {% if request.resolver_match.url_name != 'list-user' and request.resolver_match.url_name != 'tambah-user' %} collapsed {% endif %}" href="#" data-toggle="collapse" data-target="#collapseDataUser"
             aria-expanded="true" aria-controls="collapseDataUser">
             <i class="fas fa-fw fa-cog"></i>
             <span>Data User</span>
         </a>
-        <div id="collapseDataUser" class="collapse" aria-labelledby="DataUser" data-parent="#accordionSidebar">
+        <div id="collapseDataUser" class="collapse {% if request.resolver_match.url_name == 'list-user' or request.resolver_match.url_name == 'tambah-user' %} show {% endif %}" aria-labelledby="DataUser" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="buttons.html">List User</a>
-                <a class="collapse-item" href="cards.html">Tambah User</a>
+                <a class="collapse-item {% if request.resolver_match.url_name == 'list-user' %} active {% endif %}" href="{% url 'list-user' %}">List User</a>
+                <a class="collapse-item {% if request.resolver_match.url_name == 'tambah-user' %} active {% endif %}" href="{% url 'tambah-user' %}">Tambah User</a>
             </div>
         </div>
     </li>
