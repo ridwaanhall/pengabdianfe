@@ -159,6 +159,7 @@ def tambah_user(request):
         password_text = request.POST.get('password_text')  # Changed to match form field name
         email = request.POST.get('email')
         is_admin = request.POST.get('is_admin') == 'on'
+        is_staff = request.POST.get('is_staff') == 'on'
         is_active = request.POST.get('is_active') == 'on'
 
         try:
@@ -176,6 +177,7 @@ def tambah_user(request):
             password_text=password_text,
             email=email,
             is_admin=is_admin,
+            is_staff=is_staff,
         )
         user.is_active = is_active
         user.save()
@@ -183,7 +185,7 @@ def tambah_user(request):
     return render(request, 'tambah-user.html')
 
 @login_required(login_url='/login/')
-@user_passes_test(lambda user: user.is_staff, login_url='/login/')
+@user_passes_test(lambda user: user.is_admin, login_url='/login/')
 def detail_edit_user(request, pk):
     user = User.objects.get(id=pk)
     
@@ -192,6 +194,7 @@ def detail_edit_user(request, pk):
         password = request.POST.get('password_text')
         email = request.POST.get('email')
         is_admin = request.POST.get('is_admin') == 'on'
+        is_staff = request.POST.get('is_staff') == 'on'
         is_active = request.POST.get('is_active') == 'on'
 
         # Validasi
@@ -205,6 +208,7 @@ def detail_edit_user(request, pk):
             user.set_password(password)
             user.password_text = password  # Simpan password teks
         user.is_admin = is_admin
+        user.is_staff = is_staff
         user.is_active = is_active
         user.save()
 
