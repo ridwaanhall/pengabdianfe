@@ -14,6 +14,8 @@ urlpatterns = [
     path('list-pamong/', views.list_pamong, name='list-pamong'),
     path('edit-pamong/', views.edit_pamong, name='edit-pamong'),
     path('tambah-pamong/', views.tambah_pamong, name='tambah-pamong'),
+    path('detail-edit-pamong/<int:pk>/', views.detail_edit_pamong, name='detail-edit-pamong'),
+    path('hapus-pamong/<int:pk>/', views.hapus_pamong, name='hapus-pamong'),
     
     # kegiatan
     path('list-kegiatan/', views.list_kegiatan, name='list-kegiatan'),
