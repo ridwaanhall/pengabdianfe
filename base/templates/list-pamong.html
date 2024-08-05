@@ -45,30 +45,58 @@
                         </tr>
                     </tfoot>
                     <tbody>
+                        {% for p in pamong %}
                         <tr>
-                            <td><img src="{% static 'img/undraw_profile.svg' %}" width="50px"></td>
-                            <td>Budi Santoso</td>
-                            <td>197001012021011001</td>
-                            <td>Sekretaris Desa</td>
-                            <td>Sekretaris</td>
-                            <td>2020-2025</td>
+                            <td class="text-center">
+                                {% if p.foto %}
+                                    <img src="{{ p.foto.url }}" class="rounded-circle" alt="Profile Photo {{ p.nama }}" width="50px">
+                                {% else %}
+                                    <img src="{% static 'img/undraw_profile.svg' %}" class="rounded-circle" alt="Profile Photo {{ p.nama }}" width="50px">
+                                {% endif %}
+                            </td>
+                            <td>{{ p.nama }}</td>
+                            <td>{{ p.nip }}</td>
+                            <td>{{ p.pekerjaan }}</td>
+                            <td>{{ p.jabatan }}</td>
+                            <td>{{ p.masa_jabatan_mulai }}-{{ p.masa_jabatan_selesai }}</td>
                             <td>
-                                <a href="#" class="btn btn-info mb-1 btn-sm">
+                                <!-- <a href="#" class="btn btn-info mb-1 btn-sm">
                                     <i class="fa fa-eye"></i>
-                                </a>
-                                <a href="#" class="btn btn-success mb-1 btn-sm">
+                                </a> -->
+                                <a href="{% url 'detail-edit-pamong' p.id %}" class="btn btn-success mb-1 btn-sm">
                                     <i class="fa fa-edit"></i>
                                 </a>
-                                <a href="#" class="btn btn-danger mb-1 btn-sm">
+                                <a href="{% url 'hapus-pamong' p.id %}" class="btn btn-danger mb-1 btn-sm btn-delete">
                                     <i class="fa fa-trash"></i>
-                                </a>
+                                </a>                                
                             </td>
                         </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+<!-- Modal -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Konfirmasi Penghapusan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Apakah Anda yakin ingin menghapus data ini?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                <a id="confirmDeleteButton" href="#" class="btn btn-danger">Hapus</a>
+            </div>
+        </div>
+    </div>
+</div>
 
 </div>
 {% endblock content %}
@@ -80,4 +108,26 @@
 
     <!-- Page level custom scripts -->
     <script src="{% static 'js/demo/datatables-demo.js' %}"></script>
+
+    <script>
+        // Handle delete button click
+        function handleDeleteClick(event) {
+            event.preventDefault(); // Prevent the default link behavior
+    
+            var url = event.currentTarget.getAttribute('href');
+            var modal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
+            
+            // Set the confirm button's href to the delete URL
+            document.getElementById('confirmDeleteButton').setAttribute('href', url);
+    
+            // Show the modal
+            modal.show();
+        }
+    
+        // Add event listeners to all delete buttons
+        document.querySelectorAll('.btn-delete').forEach(function(button) {
+            button.addEventListener('click', handleDeleteClick);
+        });
+    </script>
+    
 {% endblock extra_js %}
