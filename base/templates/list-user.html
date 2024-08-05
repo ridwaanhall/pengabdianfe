@@ -28,10 +28,12 @@
                             <th>NIP</th>
                             <th>Name</th>
                             <th>Username</th>
-                            <th>Password Text</th>
+                            <!-- <th>Password Text</th> -->
                             <!-- <th>Password Encrypted</th> -->
                             <th>Email</th>
                             <th>Is Admin</th>
+                            <th>Is Staff</th>
+                            <th>Is Active</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -41,9 +43,11 @@
                             <th>NIP</th>
                             <th>Name</th>
                             <th>Username</th>
-                            <th>Password Text</th>
+                            <!-- <th>Password Text</th> -->
                             <th>Email</th>
                             <th>Is Admin</th>
+                            <th>Is Staff</th>
+                            <th>Is Active</th>
                             <th>Actions</th>
                         </tr>
                     </tfoot>
@@ -54,9 +58,11 @@
                             <td>{{ user.pamong.nip }}</td>
                             <td>{{ user.pamong.nama }}</td>
                             <td>{{ user.username }}</td>
-                            <td>{{ user.password_text }}</td>
+                            <!-- <td>{{ user.password_text }}</td> -->
                             <td>{{ user.email }}</td>
                             <td>{{ user.is_admin }}</td>
+                            <td>{{ user.is_staff }}</td>
+                            <td>{{ user.is_active }}</td>
                             <td>
                                 <a href="{% url 'detail-edit-user' user.id %}" class="btn btn-success mb-1 btn-sm">
                                     <i class="fa fa-edit"></i>
