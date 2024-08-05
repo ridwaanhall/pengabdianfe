@@ -17,6 +17,13 @@ urlpatterns = [
     path('detail-edit-pamong/<int:pk>/', views.detail_edit_pamong, name='detail-edit-pamong'),
     path('hapus-pamong/<int:pk>/', views.hapus_pamong, name='hapus-pamong'),
     
+    # user
+    path('list-user/', views.list_user, name='list-user'),
+    # path('edit-user/', views.edit_user, name='edit-user'),
+    path('tambah-user/', views.tambah_user, name='tambah-user'),
+    # path('detail-edit-user/<int:pk>/', views.detail_edit_user, name='detail-edit-user'),
+    # path('hapus-user/<int:pk>/', views.hapus_user, name='hapus-user'),
+    
     # kegiatan
     path('list-kegiatan/', views.list_kegiatan, name='list-kegiatan'),
     path('edit-kegiatan/', views.edit_kegiatan, name='edit-kegiatan'),

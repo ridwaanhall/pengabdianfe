@@ -3,8 +3,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib import messages
+from django.http import HttpResponseBadRequest
 
-from .models import Pamong
+from .models import Pamong, User
 
 # auth
 def login(request):
@@ -136,6 +137,50 @@ def hapus_pamong(request, pk):
     pamong = get_object_or_404(Pamong, id=pk)
     pamong.delete()
     return redirect('list-pamong')
+
+
+# user
+@login_required(login_url='/login/')
+@user_passes_test(lambda user: user.is_staff, login_url='/login/')
+def list_user(request):
+    user = User.objects.all()
+    context = {
+        'users': user
+    }
+    return render(request, 'list-user.html', context)
+
+@login_required(login_url='/login/')
+@user_passes_test(lambda user: user.is_staff, login_url='/login/')
+def tambah_user(request):
+    if request.method == 'POST':
+        pamong_id = request.POST.get('pamong_id')
+        username = request.POST.get('username')
+        password = request.POST.get('password_text')
+        password_text = request.POST.get('password_text')  # Changed to match form field name
+        email = request.POST.get('email')
+        is_admin = request.POST.get('is_admin') == 'on'
+        is_active = request.POST.get('is_active') == 'on'
+
+        try:
+            pamong = Pamong.objects.get(id=pamong_id)
+        except Pamong.DoesNotExist:
+            return render(request, 'tambah-user.html', {'error': 'Pamong dengan ID tersebut tidak ditemukan.'})
+
+        if User.objects.filter(pamong=pamong).exists():
+            return render(request, 'tambah-user.html', {'error': 'User dengan Pamong ID tersebut sudah ada.'})
+
+        user = User.objects.create_user(
+            pamong_id=pamong.id,
+            username=username,
+            password=password,  # Changed from password_text to password
+            password_text=password_text,
+            email=email,
+            is_admin=is_admin,
+        )
+        user.is_active = is_active
+        user.save()
+        return redirect('list-user')
+    return render(request, 'tambah-user.html')
 
 
 # kegiatan

@@ -1,4 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.utils.translation import gettext_lazy as _
+
 
 class Pamong(models.Model):
     nama = models.CharField(max_length=100)
@@ -33,3 +36,39 @@ class Pamong(models.Model):
 
     def __str__(self):
         return self.nama
+
+class UserManager(BaseUserManager):
+    def create_user(self, pamong_id, username, password, password_text, email=None, **extra_fields):
+        try:
+            pamong = Pamong.objects.get(id=pamong_id)
+        except Pamong.DoesNotExist:
+            raise ValueError(_('Pamong with the provided ID does not exist'))
+        
+        if not username:
+            raise ValueError(_('The Username field must be set'))
+        
+        user = self.model(pamong=pamong, username=username, password_text=password_text, email=email, **extra_fields)
+        user.set_password(password)  # This hashes the password
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, pamong_id, username, password, password_text, email=None, **extra_fields):
+        extra_fields.setdefault('is_admin', True)
+        return self.create_user(pamong_id, username, password, password_text, email, **extra_fields)
+    
+
+class User(AbstractBaseUser):
+    pamong = models.OneToOneField(Pamong, on_delete=models.CASCADE, related_name='user')
+    username = models.CharField(max_length=150, unique=True)
+    password = models.CharField(max_length=128)  # This will store the hashed password
+    password_text = models.CharField(max_length=128)
+    is_admin = models.BooleanField(default=False)
+    email = models.EmailField(unique=True, null=True, blank=True)
+
+    objects = UserManager()
+
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['pamong_id']
+
+    def __str__(self):
+        return self.username
