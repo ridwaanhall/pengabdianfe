@@ -24,6 +24,7 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
+                            <th>ID</th>
                             <th>Profile Photo</th>
                             <th>Nama</th>
                             <th>NIP</th>
@@ -35,6 +36,7 @@
                     </thead>
                     <tfoot>
                         <tr>
+                            <th>ID</th>
                             <th>Profile Photo</th>
                             <th>Nama</th>
                             <th>NIP</th>
@@ -47,6 +49,7 @@
                     <tbody>
                         {% for p in pamong %}
                         <tr>
+                            <td>{{ p.id }}</td>
                             <td class="text-center">
                                 {% if p.foto %}
                                     <img src="{{ p.foto.url }}" class="rounded-circle" alt="Profile Photo {{ p.nama }}" width="50px">
