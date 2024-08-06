@@ -15,6 +15,24 @@
     <h1 class="h3 mb-2 text-gray-800">Data User</h1>
     <p class="mb-4">Data User adalah data Perangkat Desa yang terdaftar dalam Sistem Pendataan Kegiatan Desa</p>
 
+    {% if messages %}
+    {% for message in messages %}
+        {% if 'error' in message.tags %}
+            <div class="card bg-danger text-white shadow mb-2">
+                <div class="card-body">
+                    {{ message }}
+                </div>
+            </div>
+        {% elif 'success' in message.tags %}
+            <div class="card bg-success text-white shadow mb-2">
+                <div class="card-body">
+                    {{ message }}
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+    {% endif %}
+
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">List Data User</h6>

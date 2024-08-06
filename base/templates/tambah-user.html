@@ -16,14 +16,26 @@
 
     <div id="alert-container"></div>
 
-    <div class="row">
-        {% if error %}
-        <div class="card bg-danger text-white shadow mb-2">
-            <div class="card-body">
-                {{ error }}
+    {% if messages %}
+    {% for message in messages %}
+        {% if 'error' in message.tags %}
+            <div class="card bg-danger text-white shadow mb-2">
+                <div class="card-body">
+                    {{ message }}
+                </div>
             </div>
-        </div>
+        {% elif 'success' in message.tags %}
+            <div class="card bg-success text-white shadow mb-2">
+                <div class="card-body">
+                    {{ message }}
+                </div>
+            </div>
         {% endif %}
+    {% endfor %}
+    {% endif %}
+
+    <div class="row">
+
         <form method="post">
             {% csrf_token %}
             <div class="mb-3">

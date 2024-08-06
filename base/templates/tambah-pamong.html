@@ -15,9 +15,27 @@
     <!-- <p class="mb-4"></p> -->
 
     <div id="alert-container"></div>
+    {% if messages %}
+    {% for message in messages %}
+        {% if 'error' in message.tags %}
+            <div class="card bg-danger text-white shadow mb-2">
+                <div class="card-body">
+                    {{ message }}
+                </div>
+            </div>
+        {% elif 'success' in message.tags %}
+            <div class="card bg-success text-white shadow mb-2">
+                <div class="card-body">
+                    {{ message }}
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+    {% endif %}
 
     <form id="tambahPamongForm" method="post" enctype="multipart/form-data">
         <div class="row">
+
             {% csrf_token %}
             <div class="col-xl-4">
                 <!-- Profile picture card -->
