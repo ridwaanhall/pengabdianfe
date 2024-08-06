@@ -4,6 +4,8 @@ from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib import messages
 from django.http import HttpResponseBadRequest
+from django.db import IntegrityError
+from django.core.exceptions import ValidationError
 
 from .models import Pamong, User
 
@@ -55,87 +57,131 @@ def edit_pamong(request):
 def detail_edit_pamong(request, pk):
     pamong = Pamong.objects.get(id=pk)
     if request.method == 'POST':
-        # Ambil data dari request.POST
-        pamong.nama = request.POST.get('nama')
-        pamong.nik = request.POST.get('nik')
-        pamong.tempat_lahir = request.POST.get('tempat_lahir')
-        pamong.tanggal_lahir = request.POST.get('tanggal_lahir')
-        pamong.alamat = request.POST.get('alamat')
-        pamong.status_kawin = request.POST.get('status_kawin')
-        pamong.pekerjaan = request.POST.get('pekerjaan')
-        pamong.gol_darah = request.POST.get('gol_darah')
-        pamong.jenis_kelamin = request.POST.get('jenis_kelamin')
-        pamong.agama = request.POST.get('agama')
-        pamong.nip = request.POST.get('nip')
-        pamong.jabatan = request.POST.get('jabatan')
-        pamong.masa_jabatan_mulai = request.POST.get('masa_jabatan_mulai')
-        pamong.masa_jabatan_selesai = request.POST.get('masa_jabatan_selesai')
-        pamong.pendidikan_terakhir = request.POST.get('pendidikan_terakhir')
-        
-        if 'foto' in request.FILES:
-            pamong.foto = request.FILES['foto']
-            
-        pamong.save()
-        return redirect('list-pamong')
-    
+        try:
+            # Ambil data dari request.POST
+            nama = request.POST.get('nama')
+            nik = request.POST.get('nik')
+            tempat_lahir = request.POST.get('tempat_lahir')
+            tanggal_lahir = request.POST.get('tanggal_lahir')
+            alamat = request.POST.get('alamat')
+            status_kawin = request.POST.get('status_kawin')
+            pekerjaan = request.POST.get('pekerjaan')
+            gol_darah = request.POST.get('gol_darah')
+            jenis_kelamin = request.POST.get('jenis_kelamin')
+            agama = request.POST.get('agama')
+            nip = request.POST.get('nip')
+            jabatan = request.POST.get('jabatan')
+            masa_jabatan_mulai = request.POST.get('masa_jabatan_mulai')
+            masa_jabatan_selesai = request.POST.get('masa_jabatan_selesai')
+            pendidikan_terakhir = request.POST.get('pendidikan_terakhir')
+
+            if 'foto' in request.FILES:
+                pamong.foto = request.FILES['foto']
+
+            # Cek apakah NIP atau NIK sudah ada, tapi bukan untuk pamong yang sedang diedit
+            if Pamong.objects.filter(nip=nip).exclude(id=pk).exists():
+                messages.error(request, 'NIP sudah terdaftar. Silakan gunakan NIP yang lain.')
+            elif Pamong.objects.filter(nik=nik).exclude(id=pk).exists():
+                messages.error(request, 'NIK sudah terdaftar. Silakan gunakan NIK yang lain.')
+            else:
+                # Update data pamong
+                pamong.nama = nama
+                pamong.nik = nik
+                pamong.tempat_lahir = tempat_lahir
+                pamong.tanggal_lahir = tanggal_lahir
+                pamong.alamat = alamat
+                pamong.status_kawin = status_kawin
+                pamong.pekerjaan = pekerjaan
+                pamong.gol_darah = gol_darah
+                pamong.jenis_kelamin = jenis_kelamin
+                pamong.agama = agama
+                pamong.nip = nip
+                pamong.jabatan = jabatan
+                pamong.masa_jabatan_mulai = masa_jabatan_mulai
+                pamong.masa_jabatan_selesai = masa_jabatan_selesai
+                pamong.pendidikan_terakhir = pendidikan_terakhir
+                
+                pamong.save()
+                messages.success(request, 'Data pamong berhasil diperbarui.')
+                return redirect('detail-edit-pamong', pk=pamong.id)
+        except IntegrityError as e:
+            messages.error(request, f'Terjadi kesalahan: {str(e)}')
+
     context = {
         'pamong': pamong
     }
-
     return render(request, 'detail-edit-pamong.html', context)
 
 @login_required(login_url='/login/')
 @user_passes_test(lambda user: user.is_staff, login_url='/login/')
 def tambah_pamong(request):
     if request.method == 'POST':
-        # Ambil data dari request.POST
-        nama = request.POST.get('nama')
-        nik = request.POST.get('nik')
-        tempat_lahir = request.POST.get('tempat_lahir')
-        tanggal_lahir = request.POST.get('tanggal_lahir')
-        alamat = request.POST.get('alamat')
-        status_kawin = request.POST.get('status_kawin')
-        pekerjaan = request.POST.get('pekerjaan')
-        gol_darah = request.POST.get('gol_darah')
-        jenis_kelamin = request.POST.get('jenis_kelamin')
-        agama = request.POST.get('agama')
-        nip = request.POST.get('nip')
-        jabatan = request.POST.get('jabatan')
-        masa_jabatan_mulai = request.POST.get('masa_jabatan_mulai')
-        masa_jabatan_selesai = request.POST.get('masa_jabatan_selesai')
-        pendidikan_terakhir = request.POST.get('pendidikan_terakhir')
-        
-        # Ambil file dari request.FILES
-        foto = request.FILES.get('foto')
+        try:
+            # Ambil data dari request.POST
+            nama = request.POST.get('nama')
+            nik = request.POST.get('nik')
+            tempat_lahir = request.POST.get('tempat_lahir')
+            tanggal_lahir = request.POST.get('tanggal_lahir')
+            alamat = request.POST.get('alamat')
+            status_kawin = request.POST.get('status_kawin')
+            pekerjaan = request.POST.get('pekerjaan')
+            gol_darah = request.POST.get('gol_darah')
+            jenis_kelamin = request.POST.get('jenis_kelamin')
+            agama = request.POST.get('agama')
+            nip = request.POST.get('nip')
+            jabatan = request.POST.get('jabatan')
+            masa_jabatan_mulai = request.POST.get('masa_jabatan_mulai')
+            masa_jabatan_selesai = request.POST.get('masa_jabatan_selesai')
+            pendidikan_terakhir = request.POST.get('pendidikan_terakhir')
+            
+            # Ambil file dari request.FILES
+            foto = request.FILES.get('foto')
 
-        # Simpan data ke database
-        pamong = Pamong(
-            nama=nama,
-            nik=nik,
-            tempat_lahir=tempat_lahir,
-            tanggal_lahir=tanggal_lahir,
-            alamat=alamat,
-            status_kawin=status_kawin,
-            pekerjaan=pekerjaan,
-            gol_darah=gol_darah,
-            jenis_kelamin=jenis_kelamin,
-            agama=agama,
-            nip=nip,
-            jabatan=jabatan,
-            masa_jabatan_mulai=masa_jabatan_mulai,
-            masa_jabatan_selesai=masa_jabatan_selesai,
-            pendidikan_terakhir=pendidikan_terakhir,
-            foto=foto
-        )
-        pamong.save()
-        return redirect('list-pamong')
+            # Cek apakah NIP sudah ada
+            if Pamong.objects.filter(nip=nip).exists():
+                messages.error(request, 'NIP sudah terdaftar. Silakan gunakan NIP yang lain.')
+            elif Pamong.objects.filter(nik=nik).exists():
+                messages.error(request, 'NIK sudah terdaftar. Silakan gunakan NIK yang lain.')
+            else:
+                # Simpan data ke database
+                pamong = Pamong(
+                    nama=nama,
+                    nik=nik,
+                    tempat_lahir=tempat_lahir,
+                    tanggal_lahir=tanggal_lahir,
+                    alamat=alamat,
+                    status_kawin=status_kawin,
+                    pekerjaan=pekerjaan,
+                    gol_darah=gol_darah,
+                    jenis_kelamin=jenis_kelamin,
+                    agama=agama,
+                    nip=nip,
+                    jabatan=jabatan,
+                    masa_jabatan_mulai=masa_jabatan_mulai,
+                    masa_jabatan_selesai=masa_jabatan_selesai,
+                    pendidikan_terakhir=pendidikan_terakhir,
+                    foto=foto
+                )
+                pamong.save()
+                messages.success(request, 'Data pamong berhasil ditambahkan.')
+                return redirect('list-pamong')
+        except IntegrityError as e:
+            messages.error(request, f'Terjadi kesalahan: {str(e)}')
+    
     return render(request, 'tambah-pamong.html')
 
 @login_required(login_url='/login/')
 @user_passes_test(lambda user: user.is_staff, login_url='/login/')
 def hapus_pamong(request, pk):
-    pamong = get_object_or_404(Pamong, id=pk)
-    pamong.delete()
+    try:
+        pamong = get_object_or_404(Pamong, id=pk)
+        pamong.delete()
+        messages.success(request, 'Data pamong berhasil dihapus.')
+    except IntegrityError as e:
+        messages.error(request, f'Terjadi kesalahan: {str(e)}')
+    except Exception as e:
+        messages.error(request, f'Terjadi kesalahan yang tidak terduga: {str(e)}')
+    
     return redirect('list-pamong')
 
 
@@ -165,29 +211,47 @@ def tambah_user(request):
         try:
             pamong = Pamong.objects.get(id=pamong_id)
         except Pamong.DoesNotExist:
-            return render(request, 'tambah-user.html', {'error': 'Pamong dengan ID tersebut tidak ditemukan.'})
+            messages.error(request, 'Pamong dengan ID tersebut tidak ditemukan.')
+            return render(request, 'tambah-user.html')
 
         if User.objects.filter(pamong=pamong).exists():
-            return render(request, 'tambah-user.html', {'error': 'User dengan Pamong ID tersebut sudah ada.'})
+            messages.error(request, 'User dengan Pamong ID tersebut sudah ada.')
+            return render(request, 'tambah-user.html')
 
-        user = User.objects.create_user(
-            pamong_id=pamong.id,
-            username=username,
-            password=password,
-            password_text=password_text,
-            email=email,
-            is_admin=is_admin,
-            is_staff=is_staff,
-        )
-        user.is_active = is_active
-        user.save()
-        return redirect('list-user')
+        try:
+            user = User.objects.create_user(
+                pamong_id=pamong.id,
+                username=username,
+                password=password,
+                password_text=password_text,
+                email=email,
+            )
+            user.is_staff = is_staff
+            user.is_superuser = is_admin
+            user.is_active = is_active
+            user.save()
+            messages.success(request, 'User berhasil ditambahkan.')
+            return redirect('list-user')
+        except IntegrityError as e:
+            if 'UNIQUE constraint failed: base_user.email' in str(e):
+                messages.error(request, 'Email sudah digunakan. Silakan gunakan email yang lain.')
+            else:
+                messages.error(request, f'Terjadi kesalahan: {str(e)}')
+        except ValidationError as e:
+            messages.error(request, f'Validasi error: {str(e)}')
+        except Exception as e:
+            messages.error(request, f'Terjadi kesalahan yang tidak terduga: {str(e)}')
+
     return render(request, 'tambah-user.html')
 
 @login_required(login_url='/login/')
 @user_passes_test(lambda user: user.is_admin, login_url='/login/')
 def detail_edit_user(request, pk):
-    user = User.objects.get(id=pk)
+    user = get_object_or_404(User, id=pk)
+    
+    context = {
+        'user': user
+    }
     
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -197,26 +261,37 @@ def detail_edit_user(request, pk):
         is_staff = request.POST.get('is_staff') == 'on'
         is_active = request.POST.get('is_active') == 'on'
 
-        # Validasi
+        # Validasi username
         if User.objects.filter(username=username).exclude(id=pk).exists():
-            return render(request, 'edit-user.html', {'user': user, 'error': 'Username sudah digunakan.'})
+            messages.error(request, 'Username sudah digunakan.')
+            return render(request, 'detail-edit-user.html', context)
 
-        # Update user
-        user.username = username
-        user.email = email
-        if password:
-            user.set_password(password)
-            user.password_text = password  # Simpan password teks
-        user.is_admin = is_admin
-        user.is_staff = is_staff
-        user.is_active = is_active
-        user.save()
+        # Validasi email
+        if User.objects.filter(email=email).exclude(id=pk).exists():
+            messages.error(request, 'Email sudah digunakan.')
+            return render(request, 'detail-edit-user.html', context)
 
-        return redirect('list-user')  # Ganti dengan nama URL untuk daftar user
-    
-    context = {
-        'user': user
-    }
+        try:
+            # Update user
+            user.username = username
+            user.email = email
+            if password:
+                user.set_password(password)
+                user.password_text = password  # Simpan password teks jika diperlukan
+            user.is_staff = is_staff
+            user.is_superuser = is_admin
+            user.is_active = is_active
+            user.save()
+
+            messages.success(request, 'User berhasil diperbarui.')
+            return redirect('detail-edit-user', pk=user.id)
+        except IntegrityError as e:
+            messages.error(request, f'Terjadi kesalahan saat menyimpan pengguna: {str(e)}')
+        except ValidationError as e:
+            messages.error(request, f'Validasi error: {str(e)}')
+        except Exception as e:
+            messages.error(request, f'Terjadi kesalahan yang tidak terduga: {str(e)}')
+
     return render(request, 'detail-edit-user.html', context)
 
 @login_required(login_url='/login/')
